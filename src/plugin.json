@@ -1,0 +1,46 @@
+{
+  "type": "datasource",
+  "name": "Fronius Server Datasource (SolarAPI V1)",
+  "id": "plavsa-fronius-server-datasource-solar-api-v-1",
+  "metrics": true,
+  "info": {
+    "description": "Fronius Server Datasource (SolarAPI V1) for connection to Fronius Inverters",
+    "author": {
+      "name": "Andrija Plavsa",
+      "url": ""
+    },
+    "keywords": [
+      "solar",
+      "api",
+      "fronius"
+    ],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/grafana/simple-datasource"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/grafana/simple-datasource/blob/master/LICENSE"
+      }
+    ],
+    
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "6.5.x",
+    "plugins": []
+  },
+  "routes": [
+    {
+      "path": "fronius",
+      "url": "{{ .JsonData.path }}"
+    }
+  ]
+}
