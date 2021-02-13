@@ -8,7 +8,7 @@ export interface MyQuery extends DataQuery {
 
 export const defaultQuery: Partial<MyQuery> = {
   constant: 6.5,
-  type: 'energy',
+  type: 'EnergyReal_WAC_Sum_Produced',
 };
 
 /**

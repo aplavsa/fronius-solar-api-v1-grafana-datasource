@@ -1,0 +1,17 @@
+TimeSpanInSec
+EnergyReal_WAC_Sum_Produced
+EnergyReal_WAC_Sum_Consumed
+InverterEvents
+InverterErrors
+Current_DC_String_1
+Current_DC_String_2
+Voltage_DC_String_1
+Voltage_DC_String_2
+Temperature_Powerstage
+Voltage_AC_Phase_1
+Voltage_AC_Phase_2
+Voltage_AC_Phase_3
+Current_AC_Phase_1
+Current_AC_Phase_2
+Current_AC_Phase_3
+PowerReal_PAC_Sum

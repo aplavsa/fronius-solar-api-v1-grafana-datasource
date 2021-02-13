@@ -2,11 +2,45 @@ import defaults from 'lodash/defaults';
 
 import React, { ChangeEvent, PureComponent } from 'react';
 import { LegacyForms } from '@grafana/ui';
-import { QueryEditorProps } from '@grafana/data';
+import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { DataSource } from './DataSource';
 import { defaultQuery, MyDataSourceOptions, MyQuery } from './types';
 
-const { FormField } = LegacyForms;
+const values = [
+  'TimeSpanInSec',
+  'EnergyReal_WAC_Sum_Produced',
+  'EnergyReal_WAC_Sum_Consumed',
+  'InverterEvents',
+  'InverterErrors',
+  'Current_DC_String_1',
+  'Current_DC_String_2',
+  'Voltage_DC_String_1',
+  'Voltage_DC_String_2',
+  'Temperature_Powerstage',
+  'Voltage_AC_Phase_1',
+  'Voltage_AC_Phase_2',
+  'Voltage_AC_Phase_3',
+  'Current_AC_Phase_1',
+  'Current_AC_Phase_2',
+  'Current_AC_Phase_3',
+  'PowerReal_PAC_Sum',
+];
+
+const selectableValues: SelectableValue[] = [
+  {
+    label: 'Energy Real WAC Produced',
+    value: 'EnergyReal_WAC_Sum_Produced',
+  },
+];
+
+values.forEach(value => {
+  selectableValues.push({
+    label: value,
+    value: value,
+  });
+});
+
+const { FormField, Select } = LegacyForms;
 
 type Props = QueryEditorProps<DataSource, MyQuery, MyDataSourceOptions>;
 
@@ -20,6 +54,13 @@ export class QueryEditor extends PureComponent<Props> {
     const { onChange, query, onRunQuery } = this.props;
     onChange({ ...query, constant: parseFloat(event.target.value) });
     // executes the query
+    onRunQuery();
+  };
+
+  onChannelChange = (event: SelectableValue<string>) => {
+    const { onChange, query, onRunQuery } = this.props;
+    onChange({ ...query, type: event.value! });
+
     onRunQuery();
   };
 
@@ -44,6 +85,8 @@ export class QueryEditor extends PureComponent<Props> {
           label="Query Text"
           tooltip="Not used yet"
         />
+        <FormField labelWidth={8} value="test" label="test" tooltip="test" inputEl={<Select />} />
+        <Select options={selectableValues} tooltipContent="sadržaj" onChange={this.onChannelChange} />
       </div>
     );
   }

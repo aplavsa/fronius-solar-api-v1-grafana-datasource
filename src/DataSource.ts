@@ -25,7 +25,9 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   }
 
   async query(options: DataQueryRequest<MyQuery>): Promise<DataQueryResponse> {
-    const { range } = options;
+    const { range, targets } = options;
+
+    const {type}: MyQuery = targets[0];
     const from = range!.from.format('DD.MM.YYYY');
     const to = range!.to.format('DD.MM.YYYY');
 
@@ -34,7 +36,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       const query = defaults(target, defaultQuery);
 
       const response = await getBackendSrv().fetch({
-        url: `${this.url}/fronius/solar_api/v1/GetArchiveData.cgi?Scope=System&StartDate=${from}&EndDate=${to}&Channel=TimeSpanInSec&Channel=EnergyReal_WAC_Sum_Produced`,
+        url: `${this.url}/fronius/solar_api/v1/GetArchiveData.cgi?Scope=System&StartDate=${from}&EndDate=${to}&Channel=TimeSpanInSec&Channel=${type}`,
         method: 'GET',
         params: {},
       });
