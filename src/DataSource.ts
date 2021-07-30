@@ -25,9 +25,8 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   }
 
   async query(options: DataQueryRequest<MyQuery>): Promise<DataQueryResponse> {
-    const { range, targets } = options;
+    const { range } = options;
 
-    const {type}: MyQuery = targets[0];
     const from = range!.from.format('DD.MM.YYYY');
     const to = range!.to.format('DD.MM.YYYY');
 
@@ -36,7 +35,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       const query = defaults(target, defaultQuery);
 
       const response = await getBackendSrv().fetch({
-        url: `${this.url}/fronius/solar_api/v1/GetArchiveData.cgi?Scope=System&StartDate=${from}&EndDate=${to}&Channel=TimeSpanInSec&Channel=${type}`,
+        url: `${this.url}/fronius/solar_api/v1/GetArchiveData.cgi?Scope=System&StartDate=${from}&EndDate=${to}&Channel=${target.type}`,
         method: 'GET',
         params: {},
       });
@@ -52,14 +51,14 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       let finalEnergies: any[] = [];
 
       try {
-        const timeSpanInSec = responseDataJson.Body.Data['inverter/1'].Data.TimeSpanInSec.Values;
-        const energy = responseDataJson.Body.Data['inverter/1'].Data['EnergyReal_WAC_Sum_Produced'].Values;
+        // const timeSpanInSec = responseDataJson.Body.Data['inverter/1'].Data.TimeSpanInSec.Values;
+        const energy = responseDataJson.Body.Data['inverter/1'].Data[target.type].Values;
 
         const startDate = responseDataJson.Body.Data['inverter/1'].Start;
 
         const startDateTimestamp = new Date(startDate).valueOf();
 
-        const timeSpanInSecArray: any[] = [];
+        // const timeSpanInSecArray: any[] = [];
 
         const energyRealWacSumProducedArray: any[] = [];
 
@@ -67,9 +66,9 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
         let currentTimestamp = startDateTimestamp;
 
-        Object.keys(timeSpanInSec).forEach(key => {
-          timeSpanInSecArray.push(timeSpanInSec[key]);
-        });
+        // Object.keys(timeSpanInSec).forEach(key => {
+        //   timeSpanInSecArray.push(timeSpanInSec[key]);
+        // });
 
         Object.keys(energy).forEach(key => {
           energyRealWacSumProducedArray.push(energy[key]);
